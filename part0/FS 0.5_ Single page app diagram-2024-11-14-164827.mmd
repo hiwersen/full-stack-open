@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant browser
+    participant server
+    
+    %% The browser fetches the HTML file from the server using an HTTP GET request
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: the HTML document
+    deactivate server
+
+    %% The browser loads the /exampleapp/spa page and fetches the CSS (spa:4) and JavaScript (spa:5) files
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the CSS file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    %% The browser starts executing the JavaScript code that fetches the JSON from the server (spa.js:31)
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [..., { "content": "Hello from Kunilingusik", "date": "2024-11-14T09:35:20.748Z" }]
+    deactivate server
+
+    %% (spa.js:23) The browser executes the callback function that:
+    %% (spa.js:25) parses the JSON data into a JS array and reasigns the notes list
+    %% (spa.js:26 and spa.js:18) renders the notes using the DOM API 

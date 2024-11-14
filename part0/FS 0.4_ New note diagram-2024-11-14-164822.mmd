@@ -1,0 +1,41 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    %% The browser, triggered by the form's submit event, sends the new note to the server using HTTPS POST request and the URL-encoded Form Data:
+    %% note: Hello world from London
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    %% The server accesses the data from the body field of the request object,
+    %% creates a new note object liberal, and adds it to a notes list
+    server-->>browser: URL Redirect /exampleapp/notes
+    deactivate server
+    %% Then, the server ridirects the browser to the /exampleapp/notes page
+    
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+    %% The browser reloads the /exampleapp/notes page and fetches the CSS (notes:4) and JavaScript (notes:5) files
+    
+    par  The browser fetches both the CSS and JavaScript files simultaneously, but the execution of the JavaScript may pause HTML parsing until it's completed.
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+    end
+
+    %% The browser starts executing the JavaScript code that fetches the JSON from the server (main.js:23)
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [..., { "content": " Message for exercise 0.4", "date": "2024-11-13T09:40:51.622Z" }]
+    deactivate server
+
+    %% The browser executes the callback function (main.js:3) that renders the notes using the DOM API (main.js:18)
