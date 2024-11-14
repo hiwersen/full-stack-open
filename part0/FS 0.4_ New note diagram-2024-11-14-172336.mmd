@@ -7,10 +7,10 @@ sequenceDiagram
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
     %% The server accesses the data from the body field of the request object,
-    %% creates a new note object liberal, and adds it to a notes list
+    %% creates a new note object literal, and adds it to a notes list
     server-->>browser: URL Redirect /exampleapp/notes
     deactivate server
-    %% Then, the server ridirects the browser to the /exampleapp/notes page
+    %% Then, the server redirects the browser to the /exampleapp/notes page
     
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
@@ -22,7 +22,7 @@ sequenceDiagram
     par  The browser fetches both the CSS and JavaScript files simultaneously, but the execution of the JavaScript may pause HTML parsing until it's completed.
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
-    server-->>browser: the css file
+    server-->>browser: the CSS file
     deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
