@@ -21,7 +21,7 @@ const ButtonsDisplay = ({ feedbacks }) => {
     />))
 } 
 
-const StatisticsDisplay = ({ feedbacks }) => {
+const Statistics = ({ feedbacks }) => {
   const all = feedbacks.reduce((acc, { score }) => score + acc, 0)
   const positive = feedbacks.filter(({ label }) => label === 'Good')[0].score
   const average = (positive - feedbacks.filter(({ label }) => label === 'Bad')[0].score) / (all || 1)
@@ -74,7 +74,7 @@ const App = () => {
 
       <section>
         <h2>Statistics:</h2>
-        <StatisticsDisplay feedbacks={feedbacks} />
+        <Statistics feedbacks={feedbacks} />
       </section>
 
     </div>
