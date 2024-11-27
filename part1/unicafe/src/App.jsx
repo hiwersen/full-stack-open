@@ -28,8 +28,8 @@ const Statistics = ({ feedbacks }) => {
 
   if (all === 0) return <p>No feedback given</p>
 
-  const positive = feedbacks.filter(({ label }) => label === 'Good')[0].score
-  const average = (positive - feedbacks.filter(({ label }) => label === 'Bad')[0].score) / (all || 1)
+  const positive = feedbacks.find(({ label }) => label === 'Good').score
+  const average = (positive - feedbacks.find(({ label }) => label === 'Bad').score) / (all || 1)
 
   return (
     <table>
