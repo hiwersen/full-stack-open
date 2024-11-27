@@ -21,7 +21,7 @@ const ButtonsDisplay = ({ feedbacks }) => {
     />))
 } 
 
-const StatisticLine = ({ text, value }) => <p>{text} {value}</p>
+const StatisticLine = ({ text, value }) => <tr><th style={{textAlign: 'left'}}>{text}</th><td>{value}</td></tr>
 
 const Statistics = ({ feedbacks }) => {
   const all = feedbacks.reduce((acc, { score }) => score + acc, 0)
@@ -31,13 +31,21 @@ const Statistics = ({ feedbacks }) => {
   const positive = feedbacks.filter(({ label }) => label === 'Good')[0].score
   const average = (positive - feedbacks.filter(({ label }) => label === 'Bad')[0].score) / (all || 1)
 
-  return feedbacks
-    .map(({ label, score }) => <StatisticLine key={label} text={label} value={score} />)
-    .concat([
-      <StatisticLine key='all' text='All' value={all} />,
-      <StatisticLine key='average' text='Average' value={average} />,
-      <StatisticLine key='positive' text='Positive' value={positive * 100 / (all || 1) + ' %'} />
-    ])
+  return (
+    <table>
+      <tbody>
+        {
+          feedbacks
+          .map(({ label, score }) => <StatisticLine key={label} text={label} value={score} />)
+          .concat([
+            <StatisticLine key='all' text='All' value={all} />,
+            <StatisticLine key='average' text='Average' value={average} />,
+            <StatisticLine key='positive' text='Positive' value={positive * 100 / (all || 1) + ' %'} />
+          ])
+        }
+      </tbody>
+    </table>
+  )
 }
 
 const App = () => {
