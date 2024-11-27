@@ -21,6 +21,8 @@ const ButtonsDisplay = ({ feedbacks }) => {
     />))
 } 
 
+const StatisticLine = ({ text, value }) => <p>{text} {value}</p>
+
 const Statistics = ({ feedbacks }) => {
   const all = feedbacks.reduce((acc, { score }) => score + acc, 0)
 
@@ -30,13 +32,13 @@ const Statistics = ({ feedbacks }) => {
   const average = (positive - feedbacks.filter(({ label }) => label === 'Bad')[0].score) / (all || 1)
 
   return feedbacks
-    .map(({ label, score }) => <p key={label}>{label} {score}</p>)
+    .map(({ label, score }) => <StatisticLine key={label} text={label} value={score} />)
     .concat([
-      <p key='all'>All {all}</p>,
-      <p key='average'>Average {average}</p>,
-      <p key='positive'>Positive {positive * 100 / (all || 1)} %</p>
+      <StatisticLine key='all' text='All' value={all} />,
+      <StatisticLine key='average' text='Average' value={average} />,
+      <StatisticLine key='positive' text='Positive' value={positive * 100 / (all || 1) + ' %'} />
     ])
-} 
+}
 
 const App = () => {
   // save clicks of each button to its own state
