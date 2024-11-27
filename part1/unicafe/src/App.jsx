@@ -23,16 +23,19 @@ const ButtonsDisplay = ({ feedbacks }) => {
 
 const Statistics = ({ feedbacks }) => {
   const all = feedbacks.reduce((acc, { score }) => score + acc, 0)
+
+  if (all === 0) return <p>No feedback given</p>
+
   const positive = feedbacks.filter(({ label }) => label === 'Good')[0].score
   const average = (positive - feedbacks.filter(({ label }) => label === 'Bad')[0].score) / (all || 1)
 
   return feedbacks
-  .map(({ label, score }) => <p key={label}>{label} {score}</p>)
-  .concat([
-    <p key='all'>All {all}</p>,
-    <p key='average'>Average {average}</p>,
-    <p key='positive'>Positive {positive * 100 / (all || 1)} %</p>
-  ])
+    .map(({ label, score }) => <p key={label}>{label} {score}</p>)
+    .concat([
+      <p key='all'>All {all}</p>,
+      <p key='average'>Average {average}</p>,
+      <p key='positive'>Positive {positive * 100 / (all || 1)} %</p>
+    ])
 } 
 
 const App = () => {
@@ -68,12 +71,12 @@ const App = () => {
       />
 
       <section>
-        <h2>Give Feedback:</h2>
+        <h2>Give Feedback</h2>
         <ButtonsDisplay feedbacks={feedbacks} />
       </section>
 
       <section>
-        <h2>Statistics:</h2>
+        <h2>Statistics</h2>
         <Statistics feedbacks={feedbacks} />
       </section>
 
