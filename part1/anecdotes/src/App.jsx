@@ -1,5 +1,14 @@
 import { useState } from 'react'
 
+const Anecdote = ({ anecdote, points }) => (
+  <>
+    <blockquote>{anecdote}</blockquote>
+    <p>Has {points} votes</p>
+  </>
+)
+
+const Button = ({ onClick, label }) => <button onClick={onClick}>{label}</button>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -23,13 +32,25 @@ const App = () => {
     copy[selected]++
     setPoints(copy)
   }
+
+  const sortedPoints = points.slice().sort((a, b) => b - a)
+  const highestScore = sortedPoints[0]
+  const mostVoted = points.findIndex(e => e === highestScore)
   
   return (
     <div>
-      <blockquote>{anecdotes[selected]}</blockquote>
-      <p>Has {points[selected]} votes</p>
-      <button onClick={handleVoteClick}>Vote</button>
-      <button onClick={handleNextClick}>Next anecdote</button>
+      <header>
+        <h1>Anecdote of the day</h1>
+        <Anecdote anecdote={anecdotes[selected]} points={points[selected]} />
+      </header>
+      <section>
+        <Button onClick={handleVoteClick} label='Vote' />
+        <Button onClick={handleNextClick} label='Next anecdote' />
+      </section>
+      <section>
+        <h2>Anecdote with most votes</h2>
+        <Anecdote anecdote={anecdotes[mostVoted]} points={points[mostVoted]} />
+      </section>
     </div>
   )
 }
