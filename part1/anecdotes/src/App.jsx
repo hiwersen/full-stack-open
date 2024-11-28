@@ -23,6 +23,7 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  const [mostVoted, setMostVoted] = useState(selected)
 
   const getRandom = (from, to) => from + Math.floor(Math.random() * to)
   const handleNextClick = () => setSelected(getRandom(0, anecdotes.length))
@@ -31,11 +32,10 @@ const App = () => {
     const copy = [...points]
     copy[selected]++
     setPoints(copy)
-  }
 
-  const sortedPoints = points.slice().sort((a, b) => b - a)
-  const highestScore = sortedPoints[0]
-  const mostVoted = points.findIndex(e => e === highestScore)
+    const sortedPoints = copy.slice().sort((a, b) => b - a)
+    setMostVoted(copy.indexOf(sortedPoints[0]))
+  }
   
   return (
     <div>
