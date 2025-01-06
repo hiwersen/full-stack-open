@@ -4,6 +4,8 @@ import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
 import axios from 'axios'
 
+const url = 'http://localhost:3001/persons'
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -11,15 +13,11 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    console.log('effect');
-    
     axios
-      .get('http://localhost:3001/persons')
+      .get(url)
       .then(({ data }) => setPersons(data))
       .catch(error => console.log(error))
   }, [])
-
-  console.log('persons:', persons)
 
   const handleChange = setState => 
     event => setState(event.target.value)
@@ -35,10 +33,15 @@ const App = () => {
     } else {
       const person = {
         name: newName,
-        number: newNumber,
-        id: ++persons.length
+        number: newNumber
       }
-      setPersons(persons.concat(person))
+
+      axios
+        .post(url, person)
+        .then(({ data: person }) => 
+          setPersons(persons.concat(person)))
+        .catch(() => 
+          console.log('Error creating:', newName)) 
     }
 
     setNewName('')
