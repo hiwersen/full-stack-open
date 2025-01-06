@@ -13,6 +13,10 @@ const personsService = {
         axios
             .post(url, person)
             .then(responseHandler),
+    update: (person) => 
+        axios
+            .put(`${url}/${person.id}`, person)
+            .then(responseHandler),
     delete: (id) => 
         axios
             .delete(`${url}/${id}`)

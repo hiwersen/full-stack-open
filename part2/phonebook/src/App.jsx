@@ -23,19 +23,37 @@ const App = () => {
   const handleSubmit = event => {
     event.preventDefault()
 
-    const hasName = persons.some(({ name }) => 
+    const person = persons.find(({ name }) => 
       name === newName)
 
-    if (hasName) {
-      alert(`${newName} is already added to phonebook`)
+    if (person) {
+      const hasConfirmed = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      if (hasConfirmed) {
+        const updatedPerson = {
+          ...person,
+          number: newNumber
+        }
+      
+      personsService
+        .update(updatedPerson)
+        .then(data => 
+          setPersons(persons.map(person => 
+            person.id === data.id 
+            ? data 
+            : person
+          )))
+        .catch(() => 
+          console.log('Error updating:', newName))
+      }
+
     } else {
-      const person = {
+      const newPerson = {
         name: newName,
         number: newNumber
       }
 
       personsService
-        .create(person)
+        .create(newPerson)
         .then(data => 
           setPersons(persons.concat(data)))
         .catch(() => 
