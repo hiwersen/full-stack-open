@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
-import axios from 'axios'
-
-const url = 'http://localhost:3001/persons'
+import personsService from './services/personsService.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,9 +11,9 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then(({ data }) => setPersons(data))
+    personsService
+      .getAll()
+      .then(data => setPersons(data))
       .catch(error => console.log(error))
   }, [])
 
@@ -36,10 +34,10 @@ const App = () => {
         number: newNumber
       }
 
-      axios
-        .post(url, person)
-        .then(({ data: person }) => 
-          setPersons(persons.concat(person)))
+      personsService
+        .create(person)
+        .then(data => 
+          setPersons(persons.concat(data)))
         .catch(() => 
           console.log('Error creating:', newName)) 
     }
