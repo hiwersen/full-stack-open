@@ -21,39 +21,9 @@
       "id": "4"
     },
     {
-      "id": "889c",
-      "name": "John Doe",
-      "number": "44-99-1234567"
-    },
-    {
-      "id": "7c8a",
+      "id": "b09d",
       "name": "Jane Doe",
       "number": "44-99-9876543"
-    },
-    {
-      "id": "ed9b",
-      "name": "James Doe",
-      "number": "44-99-1111111"
-    },
-    {
-      "id": "8689",
-      "name": "Joane Doe",
-      "number": "44-99-8945238"
-    },
-    {
-      "id": "629d",
-      "name": "Jamy Doe",
-      "number": "44-99-665223"
-    },
-    {
-      "id": "98f1",
-      "name": "Jonny Doe",
-      "number": "44-99-5599887"
-    },
-    {
-      "id": "24ca",
-      "name": "Jonies",
-      "number": "Doe"
     }
   ]
 }

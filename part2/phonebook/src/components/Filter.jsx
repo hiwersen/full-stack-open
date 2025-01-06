@@ -1,5 +1,5 @@
 const Filter = ({ value, onChange }) => (
-    <div>filter shown with 
+    <div>filter shown with&nbsp; 
         <input 
           type="text" 
           value={value}

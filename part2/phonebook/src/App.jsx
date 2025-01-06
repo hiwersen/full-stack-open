@@ -47,6 +47,21 @@ const App = () => {
     setSearch('')
   }
 
+  const handleDelete = ({ name, id }) => 
+    () => {
+      const hasConfirmed = confirm(`Delete ${name}?`)
+
+      if (hasConfirmed) {
+        personsService
+          .delete(id)
+          .then(data =>
+            setPersons(persons.filter(person => 
+              person.id !== data.id
+            )))
+          .catch(error => console.log(error))
+      }
+    }
+
   const personsToDisplay = !search 
     ? persons
     : persons.filter(({ name }) => 
@@ -80,7 +95,10 @@ const App = () => {
         inputs={inputs}
       />
       <h3>Numbers</h3>
-      <Persons persons={personsToDisplay} />  
+      <Persons 
+        persons={personsToDisplay}
+        handleDelete={handleDelete}
+      />  
     </div>
   )
 }

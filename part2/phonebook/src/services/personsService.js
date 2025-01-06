@@ -4,15 +4,20 @@ const url = 'http://localhost:3001/persons'
 
 const responseHandler = ({ data }) => data
 
-const getAll = () => 
-    axios
-        .get(url)
-        .then(responseHandler)
+const personsService = {
+    getAll: () => 
+        axios
+            .get(url)
+            .then(responseHandler),
+    create: (person) => 
+        axios
+            .post(url, person)
+            .then(responseHandler),
+    delete: (id) => 
+        axios
+            .delete(`${url}/${id}`)
+            .then(responseHandler)    
+}
 
-const create = (person) => 
-    axios
-        .post(url, person)
-        .then(responseHandler)
+export default personsService
 
-
-export default { getAll, create }
