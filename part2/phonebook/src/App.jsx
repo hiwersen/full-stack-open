@@ -3,12 +3,14 @@ import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
 import personsService from './services/personsService.js'
+import Notification from './components/Notification.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -36,12 +38,14 @@ const App = () => {
       
       personsService
         .update(updatedPerson)
-        .then(data => 
+        .then(data => {
           setPersons(persons.map(person => 
             person.id === data.id 
-            ? data 
+            ? data
             : person
-          )))
+          ))
+          showMessage(`${data.name} has a new number: ${data.number}`)
+        })
         .catch(() => 
           console.log('Error updating:', newName))
       }
@@ -54,8 +58,10 @@ const App = () => {
 
       personsService
         .create(newPerson)
-        .then(data => 
-          setPersons(persons.concat(data)))
+        .then(data => {
+          setPersons(persons.concat(data))
+          showMessage(`Added ${data.name}`)
+        })
         .catch(() => 
           console.log('Error creating:', newName)) 
     }
@@ -80,6 +86,11 @@ const App = () => {
       }
     }
 
+  const showMessage = message => {
+    setMessage(message)
+    setTimeout(() => setMessage(null), 5000)
+  }
+
   const personsToDisplay = !search 
     ? persons
     : persons.filter(({ name }) => 
@@ -103,6 +114,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={message}
+      />
       <Filter
         value={search}
         onChange={handleChange(setSearch)}
