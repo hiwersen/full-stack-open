@@ -1,8 +1,17 @@
 .notification {
     font-size: 1.4em;
-    color: green;
     background-color: lightgray;
-    border: solid 2px green;
+    border: solid 2px;
     border-radius: 4px;
     padding: 0.4em;
+}
+
+.success {
+    color: green;
+    border-color: green;
+}
+
+.failure {
+    color: red;
+    border-color: red;
 }

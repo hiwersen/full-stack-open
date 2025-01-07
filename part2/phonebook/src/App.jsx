@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
-  const [message, setMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personsService
@@ -44,10 +44,16 @@ const App = () => {
             ? data
             : person
           ))
-          showMessage(`${data.name} has a new number: ${data.number}`)
+          const message = `${data.name} has a new number: ${data.number}`
+          showNotification([ message, 'success'])
         })
-        .catch(() => 
-          console.log('Error updating:', newName))
+        .catch(error => {
+          if (error.status === 404) {
+            const message = `Information of ${newName} has already been removed from server`
+            showNotification([ message, 'failure'])
+            setPersons(persons.filter(({ id }) => id !== person.id))
+          }
+        })
       }
 
     } else {
@@ -60,7 +66,8 @@ const App = () => {
         .create(newPerson)
         .then(data => {
           setPersons(persons.concat(data))
-          showMessage(`Added ${data.name}`)
+          const message = `Added ${data.name}`
+          showNotification([ message, 'success'])
         })
         .catch(() => 
           console.log('Error creating:', newName)) 
@@ -78,17 +85,27 @@ const App = () => {
       if (hasConfirmed) {
         personsService
           .delete(id)
-          .then(data =>
+          .then(data => {
             setPersons(persons.filter(person => 
               person.id !== data.id
-            )))
-          .catch(error => console.log(error))
+            ))
+            const message = `Deleted ${data.name}`
+            showNotification([ message, 'success'])
+          })
+          .catch(error => {
+            if (error.status === 404) {
+              const message = `Information of ${name} has already been removed from server`
+              showNotification([ message, 'failure'])
+              setPersons(persons.filter(person => id !== person.id))
+            }
+          })
+          
       }
     }
 
-  const showMessage = message => {
-    setMessage(message)
-    setTimeout(() => setMessage(null), 5000)
+  const showNotification = notification => {
+    setNotification(notification)
+    setTimeout(() => setNotification(null), 5000)
   }
 
   const personsToDisplay = !search 
@@ -115,7 +132,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification
-        message={message}
+        notification={notification}
       />
       <Filter
         value={search}
