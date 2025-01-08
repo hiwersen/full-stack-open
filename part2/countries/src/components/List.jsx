@@ -1,12 +1,10 @@
 const List = ({ list }) => {
-    if (!list.length) return null
-    
     const style = { 
         listStyle: 'none',
         padding: 0
     }
 
-    return (
+    return list.length > 1 && (
         <ul style={style}>
             {
                 list.map(name => 

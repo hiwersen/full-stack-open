@@ -1,6 +1,10 @@
-const Notification = ({ notification }) => {
-  return notification && (
-    <div><p>{notification}</p></div>
+const Notification = () => {
+  return (
+    <div>
+        <p>
+            Too many matches, specify another filter
+        </p>
+    </div>
   )
 }
 
