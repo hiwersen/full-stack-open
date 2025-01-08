@@ -1,4 +1,4 @@
-const Country = ({ country }) => {
+const Country = ({ country, weather }) => {
     if (!country) return null
 
     const { 
@@ -7,9 +7,17 @@ const Country = ({ country }) => {
         area,
         languages,
         flags
-     } = country
+    } = country
 
-     const style = { 
+    const { 
+        current: {
+            temperature2m: temperature,
+            cloudCover,
+            windSpeed10m: wind
+        } 
+    } = weather
+    
+    const style = { 
         listStyle: 'none',
         padding: 0
     }
@@ -38,6 +46,28 @@ const Country = ({ country }) => {
                     alt={flags.alt}
                     width={150} 
                 />
+            </div>
+            <div>
+                <h2>Weather in {capital}</h2>
+                <p>temperature&nbsp;
+                    {(temperature[0]).toFixed(2)}&nbsp; 
+                    {temperature[1]}
+                </p>
+                <p>cloud cove&nbsp; 
+                    {Math.ceil(cloudCover[0])}&nbsp; 
+                    {cloudCover[1]}
+                </p>
+                <p>wind&nbsp; 
+                    {(wind[0]).toFixed(2)}&nbsp;
+                    {wind[1]}
+                </p>
+                <a 
+                    href="https://open-meteo.com/"
+                    target="_blank"
+                    style={{ fontSize: 14 }}
+                >
+                    Weather data by Open-Meteo.com
+                </a>
             </div>
         </div>
     )

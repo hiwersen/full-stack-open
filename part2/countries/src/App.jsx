@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import Country from './components/Country'
+import Country from './components/Country.jsx'
 import axios from 'axios'
-import Search from './components/Search'
-import List from './components/List'
-import Notification from './components/Notification'
+import Search from './components/Search.jsx'
+import List from './components/List.jsx'
+import Notification from './components/Notification.jsx'
+import getWeatherData from './services/getWeatherData.js'
 
 const url = 'https://studies.cs.helsinki.fi/restcountries/api/name/'
 
 function App() {
   const [country, setCountry] = useState(null) // the country object
+  const [weather, setWeather] = useState(null) // the weather of the selected country's capital
   const [value, setValue] = useState('') // the input value
   const [list, setList] = useState([]) // the list of filtered names
   const [name, setName] = useState(null) // the selected country's name
@@ -25,13 +27,28 @@ function App() {
 
   useEffect(() => {
     if (name) {
-      console.log('fetching country...', name)
       axios
       .get(`${url}${name}`)
-      .then(({ data }) => setCountry(data))
+      .then(({ data: country }) =>  {
+        const { 
+          capitalInfo: { 
+            latlng: [ 
+              latitude, 
+              longitude ] } } 
+          = country
+
+        getWeatherData(latitude, longitude)
+              .then(data => {
+                setCountry(country) // set country and weather together
+                setWeather(data) // set country and weather together
+              })
+              .catch(error => console.log(error))
+        
+      })
       .catch(error => console.log(error))
     } else {
       setCountry(null)
+      setWeather(null)
     }
   }, [name])
 
@@ -84,12 +101,12 @@ function App() {
   return (
     <>
       <Search value={value} onChange={handleChange} />
-      { // Show either notification or list but not both:
+      { // Show either notification or list but not both
         showNotification
           ? <Notification />
           : <List list={list} onClick={handleClick} />
       }
-      <Country country={country} />
+      <Country country={country} weather={weather} />
     </>
   )
 }
