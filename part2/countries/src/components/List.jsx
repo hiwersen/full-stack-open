@@ -1,4 +1,4 @@
-const List = ({ list }) => {
+const List = ({ list, onClick }) => {
     const style = { 
         listStyle: 'none',
         padding: 0
@@ -8,7 +8,13 @@ const List = ({ list }) => {
         <ul style={style}>
             {
                 list.map(name => 
-                    <li key={name}>{name}</li>
+                    <li key={name}>{name}
+                        <button 
+                            type="button"
+                            value={name}
+                            onClick={onClick}
+                        >show</button>
+                    </li>
                 )
             }
         </ul>

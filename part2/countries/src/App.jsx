@@ -79,13 +79,15 @@ function App() {
     setList(list)
   }
 
+  const handleClick = event => handleChange(event)
+
   return (
     <>
       <Search value={value} onChange={handleChange} />
       { // Show either notification or list but not both:
         showNotification
           ? <Notification />
-          : <List list={list} />
+          : <List list={list} onClick={handleClick} />
       }
       <Country country={country} />
     </>

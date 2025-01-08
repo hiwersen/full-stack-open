@@ -28,8 +28,7 @@ const Country = ({ country }) => {
                 <ul>
                     {
                         Object.values(languages).map(language => 
-                            <li key={language}>{language}</li>
-                        )
+                            <li key={language}>{language}</li>)
                     }
                 </ul>
             </div>
